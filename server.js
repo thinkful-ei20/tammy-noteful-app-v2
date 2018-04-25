@@ -6,6 +6,7 @@ const morgan = require('morgan');
 const { PORT } = require('./config');
 
 const notesRouter = require('./routes/notes.router');
+const foldersRouter = require('./routes/folders.router');
 
 // Create an Express application
 const app = express();
