@@ -25,6 +25,8 @@ app.use(express.json());
 // Mount router on "/api"
 app.use('/api', notesRouter);
 
+app.use('/api', foldersRouter);
+
 // Catch-all 404
 app.use(function (req, res, next) {
   const err = new Error('Not Found');
