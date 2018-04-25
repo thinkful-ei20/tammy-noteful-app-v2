@@ -73,13 +73,17 @@ router.put('/notes/:id', (req, res, next) => {
   knex('notes')
     .update(updateItem)
     .where('id', noteId)
-    .returning(['id', 'title', 'content'])
-    .then(([result]) => {
-      if (result) {
-        res.json(result);
-      } else {
-        next();
-      }
+    .returning('id')
+    .then(([id]) => {
+      let noteId = id;
+      //^ assigns new id
+      return knex.select('notes.id', 'title', 'folder_id', 'folders.name as folder_name')
+        .from('notes')
+        .leftJoin('folders', 'notes.folder_id', 'folders.id')
+        .where('notes.id', noteId);
+    })
+    .then(([result]) =>{
+      res.location(`${req.originalUrl}/${result.id}`).status(201).json(result);
     })
     .catch(err => next(err));
 });
