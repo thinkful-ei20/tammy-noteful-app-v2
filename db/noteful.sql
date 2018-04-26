@@ -7,15 +7,12 @@ DROP TABLE IF EXISTS notes;
 DROP TABLE IF EXISTS folders;
 
 
-
-
 CREATE TABLE folders (
     id serial PRIMARY KEY,
     name text NOT NULL
 );
 
 ALTER SEQUENCE folders_id_seq RESTART WITH 100;
-
 
 
 CREATE TABLE notes (
@@ -30,7 +27,7 @@ ALTER SEQUENCE notes_id_seq RESTART WITH 1000;
 
 CREATE TABLE tags (
   id serial PRIMARY KEY,
-  tag text NOT NULL
+  name text NOT NULL
 );
 
 ALTER SEQUENCE tags_id_seq RESTART WITH 100;
@@ -99,7 +96,7 @@ INSERT INTO notes (title, content, folder_id) VALUES
     , 101
   );
 
-INSERT INTO tags (tag) VALUES
+INSERT INTO tags (name) VALUES
   ('Funny'),
   ('News'),
   ('Work');
