@@ -1,8 +1,13 @@
 -- psql -U dev -f C:\Users\tiant\projects\thinkful\noteful-app-v2\db\noteful.sql noteful_app
 -- SELECT CURRENT_DATE;
 
+DROP TABLE IF EXISTS notes_tags;
+DROP TABLE IF EXISTS tags;
 DROP TABLE IF EXISTS notes;
 DROP TABLE IF EXISTS folders;
+
+
+
 
 CREATE TABLE folders (
     id serial PRIMARY KEY,
@@ -11,11 +16,6 @@ CREATE TABLE folders (
 
 ALTER SEQUENCE folders_id_seq RESTART WITH 100;
 
-INSERT INTO folders (name) VALUES
-  ('Archive'),
-  ('Drafts'),
-  ('Personal'),
-  ('Work');
 
 
 CREATE TABLE notes (
@@ -28,7 +28,24 @@ CREATE TABLE notes (
 
 ALTER SEQUENCE notes_id_seq RESTART WITH 1000;
 
+CREATE TABLE tags (
+  id serial PRIMARY KEY,
+  tag text NOT NULL
+);
 
+ALTER SEQUENCE tags_id_seq RESTART WITH 100;
+
+CREATE TABLE notes_tags (
+  note_id INTEGER NOT NULL REFERENCES notes ON DELETE CASCADE,
+  tag_id INTEGER NOT NULL REFERENCES tags ON DELETE CASCADE
+);
+
+
+INSERT INTO folders (name) VALUES
+  ('Archive'),
+  ('Drafts'),
+  ('Personal'),
+  ('Work');
 
 INSERT INTO notes (title, content, folder_id) VALUES
   (
@@ -81,6 +98,17 @@ INSERT INTO notes (title, content, folder_id) VALUES
     'Posuere sollicitudin aliquam ultrices sagittis orci a. Feugiat sed lectus vestibulum mattis ullamcorper velit. Odio pellentesque diam volutpat commodo sed egestas egestas fringilla. Velit egestas dui id ornare arcu odio. Molestie at elementum eu facilisis sed odio morbi. Tempor nec feugiat nisl pretium. At tempor commodo ullamcorper a lacus. Egestas dui id ornare arcu odio. Id cursus metus aliquam eleifend. Vitae sapien pellentesque habitant morbi tristique. Dis parturient montes nascetur ridiculus. Egestas egestas fringilla phasellus faucibus scelerisque eleifend. Aliquam faucibus purus in massa tempor nec feugiat nisl.'
     , 101
   );
+
+INSERT INTO tags (tag) VALUES
+  ('Funny'),
+  ('News'),
+  ('Work');
+
+
+INSERT INTO notes_tags (note_id, tag_id) VALUES
+  (1001, 100),
+  (1008, 101),
+  (1003, 102);
 
 -- -- get all notes
 -- SELECT * FROM notes;
