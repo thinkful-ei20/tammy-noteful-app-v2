@@ -74,6 +74,7 @@ router.put('/notes/:id', (req, res, next) => {
     .update(updateItem)
     .where('id', noteId)
     .returning('id')
+    //check if there is a way to merge these two calls together
     .then(([id]) => {
       let noteId = id;
       //^ assigns new id
