@@ -105,6 +105,7 @@ INSERT INTO tags (name) VALUES
 INSERT INTO notes_tags (note_id, tag_id) VALUES
   (1001, 100),
   (1008, 101),
+  (1003, 100),
   (1003, 102);
 
 -- -- get all notes

@@ -3,24 +3,24 @@
 const express = require('express');
 const knex = require('../knex');
 // Create an router instance (aka "mini-app")
+
+const hydrateNotes = require('../utils/hydrationNotes');
+
 const router = express.Router();
-
-// TEMP: Simple In-Memory Database
-// const data = require('../db/notes');
-// const simDB = require('../db/simDB');
-// const notes = simDB.initialize(data);
-
-
-
 
 // Get All (and search by query)
 router.get('/notes', (req, res, next) => {
   const { searchTerm } = req.query;
   const folderId = req.params.folderId;
+  const tagId = req.params.tagId;
 
-  knex.select('notes.id', 'title', 'content', 'folders.id as folder_id', 'folders.name as folderName')
+  knex.select('notes.id', 'title', 'content',
+    'folders.id as folder_id', 'folders.name as folderName',
+    'tags.id as tagId', 'tags.name as tagName')
     .from('notes')
-    .leftJoin('folders','notes.folder_id', 'folders.id')
+    .leftJoin('folders', 'notes.folder_id', 'folders.id' )
+    .leftJoin('notes_tags', 'notes.id', 'notes_tags.note_id')
+    .leftJoin('tags', 'tags.id', 'notes_tags.tag_id')
     .modify(function (queryBuilder) {
       if (searchTerm) {
         queryBuilder.where('title', 'like', `%${searchTerm}%`);
@@ -31,22 +31,42 @@ router.get('/notes', (req, res, next) => {
         queryBuilder.where('folder_id', folderId);
       }
     })
+    .modify(function (queryBuilder) {
+      if (tagId) {
+        queryBuilder.where('tag_id', tagId);
+      }
+    })
     .orderBy('notes.id')
-    .then(results => {
-      res.json(results);
+    .then(result => {
+      if (result) {
+        const hydrated = hydrateNotes(result);
+        res.json(hydrated);
+      } else {
+        next ();
+      }
     })
     .catch(err => next(err));
 });
 // Get a single item
 router.get('/notes/:id', (req, res, next) => {
   const id = req.params.id;
-  knex
-    .first('notes.id','title', 'content', 'folders.id as folder_id', 'folders.name as folderName')
+  
+  //Why doesn't first work?
+  knex.select('notes.id', 'title', 'content',
+    'folders.id as folder_id', 'folders.name as folderName',
+    'tags.id as tagId', 'tags.name as tagName')
     .from('notes')
-    .leftJoin('folders', 'notes.folder_id', 'folders.id')
+    .leftJoin('folders', 'notes.folder_id', 'folders.id' )
+    .leftJoin('notes_tags', 'notes.id', 'notes_tags.note_id')
+    .leftJoin('tags', 'tags.id', 'notes_tags.tag_id')
     .where('notes.id', id)
-    .then(results => {
-      res.json(results);
+    .then(result => {
+      if (result) {
+        const hydrated = hydrateNotes(result);
+        res.json(hydrated);
+      } else {
+        next();
+      }
     })
     .catch(err => {
       console.error(err);

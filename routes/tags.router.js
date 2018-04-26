@@ -56,7 +56,7 @@ router.put('/tags/:id', (req, res, next) => {
     })
     .catch(err => next(err));
 });
-
+//update a tag
 
 router.post('/tags', (req,res,next) => {
   const {name} = req.body;
@@ -77,6 +77,8 @@ router.post('/tags', (req,res,next) => {
     })
     .catch(err => next(err));
 });
+//insert new tag
+
 
 router.delete('/tags/:id', (req,res,next) => {
   const id = req.params.id;
@@ -90,6 +92,7 @@ router.delete('/tags/:id', (req,res,next) => {
     })
     .catch(err => next(err));
 });
+//delete tag
 
 
 module.exports = router;
