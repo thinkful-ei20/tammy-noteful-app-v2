@@ -7,6 +7,31 @@ const knex = require('../knex');
 const router = express.Router();
 //connect express.Router 
 
+router.get ('/tags', (req, res, next) => {
+  knex.select('id', 'name')
+    .from('tags')
+    .then((results) => {
+      res.json(results);
+    })
+    .catch(err => next(err));
+});
+//get all tags ^^^
+router.get ('/tags/:id', (req, res, next) => {
+  const id = req.params.id;
+
+  knex
+    .select('id', 'name')
+    .from('tags')
+    .where('tags.id', id)
+    .then(results => {
+      res.json(results);
+    })
+    .catch(err => next(err));
+});
+//get all id-specific tag ^^^
+
+
+
 
 router.post('/tags', (req,res,next) => {
   const {name} = req.body;
