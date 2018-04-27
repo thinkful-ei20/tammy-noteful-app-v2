@@ -290,5 +290,3 @@ describe('Noteful API', function () {
   });
 
 });
-
-describe 
