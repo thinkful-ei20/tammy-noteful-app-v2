@@ -2,4 +2,11 @@ language: node_js
 node_js: node
 services: postgresql
 before_script:
-  - psql -U postgres -c 'CREATE DATABASE "noteful-test";'
+- psql -U postgres -c 'CREATE DATABASE "noteful-test";'
+deploy:
+  provider: heroku
+  api_key:
+    secure: ASS+9rYImLWMwafHrt/pf/jWF+kkhby7RYqK4Dv1V6zX/cAWKibiRqmfcz7hm93wOSXtplcwelqKm56HnRp/5jt6eD6qBy877efQd+RMgGgiAifcZWH0fu8YGbeWbIAJCth2OTXGoWtpFG9dYWUVK1sngBfwY8VMoaeLGd3yWpiz9ISA5opGpY1VYHBTj8tebeB8BId24NAJJ2h3Xlv8JGOg65Esv35P+1yKTzA7pdnXz65Bu5GpYWrqXu37kiL726OmjHvCPlA3W8e4PsfpMuzI+omhsw5CT2stCWS6DCfqFrFfkrHJ6A1H3OT6XMdol8a3OAvTQAWkkRpiA8qmMVINmrGQy05F+6mJWroWddeY3pkFj/gKNtY/feJnXdKbc9X/V3erV5iBp+QxiF9FbsGaoqaqsSesmKoKVjN6k/9ld3Yg4gXEfGJEmYqF9kBEP9TlYrNWSueN/N+nrPiRvcD90kinP1DBr0Lwln2h1OYSKKTQo6vdaS1H7oW+qCuWEYIUPENS4vWDjuWTZI5rXGK0FPcezySv2Yyc8uUzFhl56cE7+NsNMok/aIIf2ULfsqnek1o/roB4sneyL/cE7W/xJQiuLJ+R5LTcK7OG2DI1cXqRglf6+L+axF3fr65izoXdIVZCihL/LqJ9XyKTy5qJ8DXz7x0fHNNhDJwrATM=
+  app: tammy-noteful-app-v2
+  on:
+    repo: thinkful-ei20/tammy-noteful-app-v2
