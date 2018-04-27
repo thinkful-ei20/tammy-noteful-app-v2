@@ -10,7 +10,7 @@ const app = require('../server');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const knex = require('../knex');
-const seedData = require('../db/seed');
+const seedData = require('../db/seedData');
 
 const expect = chai.expect;
 
@@ -76,8 +76,9 @@ describe('Noteful API', function () {
   });
 
   beforeEach(function () {
-    return seedData();
+    return seedData('./db/noteful.sql', 'dev');
   });
+
 
   afterEach(function () {
     // noop
@@ -86,7 +87,6 @@ describe('Noteful API', function () {
   after(function () {
     return knex.destroy(); // destroy the connection
   });
-
 
 
   describe('GET /api/notes', function () {
