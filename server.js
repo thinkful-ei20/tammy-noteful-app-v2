@@ -9,8 +9,10 @@ const notesRouter = require('./routes/notes.router');
 const foldersRouter = require('./routes/folders.router');
 const tagsRouter = require('./routes/tags.router');
 
+
 // Create an Express application
 const app = express();
+
 
 // Log all requests. Skip logging during
 app.use(morgan(process.env.NODE_ENV === 'development' ? 'dev' : 'common', {
@@ -50,8 +52,13 @@ app.use(function (err, req, res, next) {
 });
 
 // Listen for incoming connections
-app.listen(PORT, function () {
-  console.info(`Server listening on ${this.address().port}`);
-}).on('error', err => {
-  console.error(err);
-});
+
+if(require.main === module) {
+  app.listen(PORT, function () {
+    console.info(`Server listening on ${this.address().port}`);
+  }).on('error', err => {
+    console.error(err);
+  });
+}
+
+module.exports = app;

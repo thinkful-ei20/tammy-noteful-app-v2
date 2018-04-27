@@ -10,9 +10,7 @@ const router = express.Router();
 
 // Get All (and search by query)
 router.get('/notes', (req, res, next) => {
-  const { searchTerm } = req.query;
-  const folderId = req.params.folderId;
-  const tagId = req.params.tagId;
+  const { searchTerm, folderId, tagId } = req.query;
 
   knex.select('notes.id', 'title', 'content',
     'folders.id as folder_id', 'folders.name as folderName',
@@ -63,7 +61,7 @@ router.get('/notes/:id', (req, res, next) => {
     .then(result => {
       if (result) {
         const hydrated = hydrateNotes(result);
-        res.json(hydrated);
+        res.json(hydrated[0]);
       } else {
         next();
       }
@@ -99,13 +97,13 @@ router.put('/notes/:id', (req, res, next) => {
     .then(([id]) => {
       let noteId = id;
       //^ assigns new id
-      return knex.select('notes.id', 'title', 'folder_id', 'folders.name as folder_name')
+      return knex.select('notes.id', 'title', 'content','folder_id', 'folders.name as folder_name')
         .from('notes')
         .leftJoin('folders', 'notes.folder_id', 'folders.id')
         .where('notes.id', noteId);
     })
     .then(([result]) =>{
-      res.location(`${req.originalUrl}/${result.id}`).status(201).json(result);
+      res.location(`${req.originalUrl}/${result.id}`).status(200).json(result);
     })
     .catch(err => next(err));
 });
