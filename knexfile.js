@@ -8,7 +8,7 @@ module.exports = {
     pool: { min: 1, max: 2 }
   },
 
-  test: { client: 'pg', connection: process.env.TEST_DATABASE_URL || 'postgres://dev:dev@localhost/noteful-test', 
+  test: { client: 'pg', connection: process.env.TEST_DATABASE_URL || 'postgres://postgres:localhost/noteful-test', 
     pool: {min : 1 , max : 2} },
 
   production: {
