@@ -1,4 +1,0 @@
-language: node_js
-node_js: node
-services: postgresql
-before_scrpt: -psql -U postgres -c 'CREATE DATABASE "noteful-test";'
